@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.contenedor{
+    width: 80%;
+    border-radius: 0.5cm;
+    background-color: #208AAE;
+    display: flex;
+    flex-direction: row;
+}
+.form{
+    padding: 1cm;
+}
+.fondoimg{
+    background-color: white;
+}
