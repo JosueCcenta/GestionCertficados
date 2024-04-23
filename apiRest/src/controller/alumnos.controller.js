@@ -1,9 +1,7 @@
-const { Router } = require("express")
-const router = Router()
-const ConexionBd = require('../database.js');
+const ConexionBd = require('../config/database.js');
 
-//YA ESTA EL DE CREAR
-router.post('/alumnos/crear',(req,res)=>{
+// CREAR
+exports.crearCliente = (req,res)=>{
     const { nombre, apellido, curso, codigoqr, dni} = req.body
     if ( !nombre || !apellido || !curso || !codigoqr || !dni) {
         return res.status(400).json({ error: "Ingresa todos los datos" });
@@ -17,9 +15,11 @@ router.post('/alumnos/crear',(req,res)=>{
                 return res.status(500).json({ error: "Error executing query" + err});
             }
             res.status(200).json({ success: "Alumno creado exitosamente" });
-        });})
+        }
+    )
+}
 //Listar individual
-router.get('/alumnos/buscar/:dni',(req,res)=>{
+exports.getAlumnoByDni = (req,res)=>{
     const {dni} =req.params
     if ( !dni) {
         return res.status(400).json({ error: "Ingresa el dato a listar" });
@@ -35,9 +35,9 @@ router.get('/alumnos/buscar/:dni',(req,res)=>{
             res.json(result)
         }
     })
-})
+}
 //PAGINACION
-router.get('/alumnos/pageN/:page',(req,res)=>{
+exports.getPaginacion = (req,res)=>{
     const {page} = req.params
     if(!page){
         return err.status(400).json({error : "Ingresar el numero de pagina"});
@@ -53,9 +53,9 @@ router.get('/alumnos/pageN/:page',(req,res)=>{
             res.json(result)
         }
     })
-})
+}
 //ACTUALIZAR
-router.put('/alumnos/update/:dni',(req,res)=>{
+exports.updateCliente=(req,res)=>{
     const {dni} =req.params
     const { nombre, apellido, curso, codigoqr} = req.body
     if ( !nombre || !apellido || !curso || !codigoqr || !dni) {
@@ -72,6 +72,5 @@ router.put('/alumnos/update/:dni',(req,res)=>{
         res.status(200).json({ success: "Alumno actualizado exitosamente" });
 
     })    
-})
+}
 
-module.exports = router
