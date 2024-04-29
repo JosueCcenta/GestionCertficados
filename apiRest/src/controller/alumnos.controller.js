@@ -1,4 +1,6 @@
 const ConexionBd = require('../config/database.js');
+const csvJson = 'convert-csv-to-json'
+let userData =[]
 
 // CREAR
 exports.crearCliente = (req,res)=>{
@@ -74,3 +76,25 @@ exports.updateCliente=(req,res)=>{
     })    
 }
 
+exports.uploadFile=(req,res)=>{
+    const { file } = req
+    if(!file){
+        return res.status(400).json({ message : "File is required"})
+    }
+    if(file.mimetype!=='text/csv'){
+        return res.status(400).json({ message :'File must be CSV'})
+    }
+    let json = [];
+    try {
+        const Csv = Buffer.from(file.buffer).toString('utf-8')
+        console.log(Csv)
+        json = csvJson.csvStringToJson(Csv)
+
+    } catch (error) {
+        return res.status(500).json({message:'Error parsing file'})
+    }
+    userData = json
+
+    return res.status(200).json({data : json, message : 'El archivo se cargo correctamente'})
+    
+}

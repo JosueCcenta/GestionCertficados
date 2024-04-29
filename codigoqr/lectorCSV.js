@@ -19,7 +19,9 @@ document.getElementById('fileInput').addEventListener('change', function(evt) {
         data.push(entry);
       }
       
-      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+      var outputElement = document.getElementById('output');
+      var jsonString = JSON.stringify(data, null, 2);
+      outputElement.textContent = jsonString;
     };
     
     reader.readAsText(file);
