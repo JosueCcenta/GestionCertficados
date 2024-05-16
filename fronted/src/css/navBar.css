@@ -1,0 +1,15 @@
+.body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+ul li{
+    list-style: none;
+    float: left;
+    text-align: center;
+    width: 4rem;
+}
+.list{
+    padding: 1.2rem;
+}
