@@ -3,15 +3,15 @@ const csvJson = require('convert-csv-to-json')
 let userData =[]
 // CREAR
 exports.crearCliente = (req,res)=>{
-    const { nombre, apellido, curso, codigoqr, dni} = req.body
-    if ( !nombre || !apellido || !curso || !codigoqr || !dni) {
+    const { nombre, apellido, curso,  dni} = req.body
+    if ( !nombre || !apellido || !curso || !dni) {
         return res.status(400).json({ error: "Ingresa todos los datos" });
     }
     const consulta =
         `
-        CALL sp_crearCliente(?,?,?,?,?);
+        CALL sp_crearCliente(?,?,?,?);
         `;
-        ConexionBd.query(consulta, [ nombre, apellido, curso, codigoqr, dni], (err, result,fields) => {
+        ConexionBd.query(consulta, [ nombre, apellido, curso, dni], (err, result,fields) => {
             if (err) {
                 return res.status(500).json({ error: "Error executing query" + err});
             }
@@ -88,14 +88,11 @@ exports.uploadFile= async (req,res)=>{
         const Csv = Buffer.from(file.buffer).toString('utf-8')
         console.log(Csv)
         json = csvJson.csvStringToJson(Csv)
-
+        console.log("ok")
     } catch (error) {
         return res.status(500).json({message:'Error parsing file'})
     }
-    userData = json
-
-    return res.status(200).json({data : json, message : 'El archivo se cargo correctamente'})
-    
+    return res.status(200).json({data : json})    
 }
 
 exports.filterAlumns= async(req,res)=>{

@@ -1,14 +1,14 @@
-import './App.css'
 import { Route, Routes } from 'react-router-dom'
 
 import Home from './component/Home';
 import Administrador from './component/Administrador';
 import SearchAlumnos from './component/SearchAlumno';
 import Alumno from './component/Alumno';
-import Api from './component/Api';
+import ListaAlumnos from './component/ListaAlumnos';
 import Login from './component/Login';
 import NavBar from './layers/NavBar';
-import SubmitCSV from './SubmitCSV';
+import Page404 from './component/Page404';
+import SubirArchivo from './component/SubirArchivo';
 
 function App(){
   return(
@@ -19,9 +19,10 @@ function App(){
         <Route path='/administrador' element={<Administrador/>}/>
         <Route path='/search-page' element={<SearchAlumnos/>}/>
         <Route path='/alumnos/:alumno' element={<Alumno/>}></Route>
-        <Route path='/api' element={<Api/>}></Route>
+        <Route path='/lista-de-alumnos' element={<ListaAlumnos/>}></Route>
         <Route path='/NavBar'element={<NavBar/>}></Route>
-        <Route path='/SubmitCSV' element={<SubmitCSV/>}/>
+        <Route path='/subir-archivo' element={<SubirArchivo/>}/>
+        <Route path='*' element={<Page404/>}/>
       </Routes>
     </div>
   )

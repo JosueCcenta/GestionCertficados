@@ -8,11 +8,10 @@ export const uploadFile = async (file) => {
         });
         
         if (!res.ok) {
-            return [new Error(`Error uploading file: ${await res.statusText}`)];
+            return [new Error(`Error uploading file: ${ res.statusText}`)];
         }
 
         const json = await res.json();
-        console.log(json);
         return { error: null, data: json };
     } catch (error) {
         if (error instanceof Error) return [error];

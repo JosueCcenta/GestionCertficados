@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form'; // Asumo que estás usando react-hook-form
+import { useForm } from 'react-hook-form'; 
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
