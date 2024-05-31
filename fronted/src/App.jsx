@@ -14,14 +14,13 @@ function App(){
   return(
     <div className="App">
       <Routes>
-        <Route path='/' element={<Home/>}/>
+        <Route path='/' element={<SubirArchivo/>}/>
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/administrador' element={<Administrador/>}/>
         <Route path='/search-page' element={<SearchAlumnos/>}/>
         <Route path='/alumnos/:alumno' element={<Alumno/>}></Route>
         <Route path='/lista-de-alumnos' element={<ListaAlumnos/>}></Route>
         <Route path='/NavBar'element={<NavBar/>}></Route>
-        <Route path='/subir-archivo' element={<SubirArchivo/>}/>
         <Route path='*' element={<Page404/>}/>
       </Routes>
     </div>

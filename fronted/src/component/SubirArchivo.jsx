@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { uploadFile } from "../services/uploadFile";
 import { Toaster, toast } from "sonner";
-
+import NavBar from "../layers/NavBar";
 const APP_STATUS = {
     IDLE : 'idle',
     ERROR: 'error',
@@ -64,6 +64,7 @@ function SubirArchivo() {
     return (
         <>
         <Toaster/>
+            <NavBar/>
             <h4>Subir el archivo CSV</h4>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="">

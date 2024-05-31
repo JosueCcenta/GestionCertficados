@@ -20,7 +20,7 @@ exports.crearCliente = (req,res)=>{
     )
 }
 //Listar individual
-exports.getAlumnoByDni = (req,res)=>{
+exports.getAlumnoByDni = (req,res)=>{ 
     const {dni} =req.params
     if ( !dni) {
         return res.status(400).json({ error: "Ingresa el dato a listar" });
@@ -49,7 +49,7 @@ exports.getPaginacion = (req,res)=>{
     `
     ConexionBd.query(consulta,[page],(err,result,field)=>{
         if(err){
-            return req.status(500).json({error: "Error executing Query " + err})
+            return res.status(500).json({error: "Error executing Query " + err})
         } else{
             res.json(result)
         }

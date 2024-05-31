@@ -1,11 +1,12 @@
 import React from 'react';
 import { useFetch } from '../services/useFetch';
 function ListaAlumnos(){
-    const {data, loading, error} = useFetch("http://localhost:3000/alumnos/listado/0")
+    const {data, loading, error, handleCancelRequest} = useFetch("http://localhost:3000/alumnos/listado/0")
     return(
         <>
         <div className="AlumnosLista">
             <h1>Lista de alumnos</h1>
+            <button onClick={handleCancelRequest}>Cancelar operacion</button>
             <div className="card">
                 <ul>
                     {error && <li>Error: {error}</li>}
