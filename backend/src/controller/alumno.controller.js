@@ -22,11 +22,23 @@ exports.crearAlumno = [
 
     const sql = `CALL createAlumno(?,?,?,?)`;
 
-    ConexionBd.query(sql, [nombre, apellido_p, apellido_m, email], (error) => {
-      if (error) {
-        return res.status(500).json({ error: "Ha ocurrido un error al crear el alumno" });
+    ConexionBd.query(sql, [nombre, apellido_p, apellido_m, email], (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Ha ocurrido un error al crear el alumno= "+err});
       }
       res.status(200).json({ respuesta: "Alumno creado satisfactoriamente" });
     });
   }
 ];
+
+exports.getAlumnos = [
+  (req,res)=>{
+    sql=`CALL getAlumnos()`
+    ConexionBd.query(sql,[],(err,response)=>{
+      if(err){
+        return res.status(500).json({error:"Ha ocurrido un problema: "+err})
+      }
+      res.json(response)
+    })
+  }
+]
