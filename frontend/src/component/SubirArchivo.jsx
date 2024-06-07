@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { uploadFile } from "../services/uploadFile";
 import { Toaster, toast } from "sonner";
 import NavBar from "../layers/NavBar";
+import NotificacionSuccessful from "../templates/notifications/NotificacionSuccessful";
 const APP_STATUS = {
     IDLE : 'idle',
     ERROR: 'error',
@@ -27,6 +28,7 @@ function SubirArchivo() {
             setAppStatus(APP_STATUS.READY_UPLOAD)
         }
     }
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -80,7 +82,9 @@ function SubirArchivo() {
             <div style={{ display: (appStatus === APP_STATUS.UPLOADING || appStatus === APP_STATUS.IDLE || appStatus === APP_STATUS.ERROR || appStatus === APP_STATUS.READY_UPLOAD) ? 'none' : 'block' }}>
 
             </div>
+            
         </>
+        
     );
 }
 

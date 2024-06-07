@@ -9,7 +9,7 @@ import Login from './component/Login';
 import NavBar from './layers/NavBar';
 import Page404 from './component/Page404';
 import SubirArchivo from './component/SubirArchivo';
-
+import  Loginexample  from './component/Loginexample';
 function App(){
   return(
     <div className="App">
@@ -22,6 +22,7 @@ function App(){
         <Route path='/lista-de-alumnos' element={<ListaAlumnos/>}></Route>
         <Route path='/NavBar'element={<NavBar/>}></Route>
         <Route path='*' element={<Page404/>}/>
+        <Route path='/prueba' element={<Loginexample/>}></Route>
       </Routes>
     </div>
   )

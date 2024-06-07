@@ -1,5 +1,5 @@
 const ConexionBd = require('../config/database.js');
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, param } = require('express-validator');
 const validator = require('validator');
 
 exports.crearAlumno = [
@@ -30,6 +30,31 @@ exports.crearAlumno = [
     });
   }
 ];
+
+exports.updateAlumno =[
+  param('id_alumno').notEmpty().withMessage('Id es requerido'),
+  body('nombre').notEmpty().withMessage('El nombre es requerido'),
+  body('apellido_p').notEmpty().withMessage('El apellido paterno es requerido'),
+  body('apellido_m').notEmpty().withMessage('El apellido materno es requerido'),
+  body('email').isEmail().withMessage('Debe proporcionar un email válido'),
+  (req,res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    if (!validator.isInt(id_alumno)||!validator.isAlpha(nombre) || !validator.isAlpha(apellido_p) || !validator.isAlpha(apellido_m) || !validator.isEmail(email)) {
+      return res.status(400).json({ error: "Los campos contienen caracteres inválidos" });
+    }
+    const sql=`CALL updateAlumno(?,?,?,?,?)`
+
+    ConexionBd.query(sql,[id_alumno,nombre,apellido_p,apellido_m,email],(err)=>{
+      if(err){
+        return res.status(500).json({error:"Ha habido un problemas "+err})
+      }
+      return res.status(200).json("Alumno actualizado satisfactoriamente")
+    })
+  }
+]
 
 exports.getAlumnos = [
   (req,res)=>{

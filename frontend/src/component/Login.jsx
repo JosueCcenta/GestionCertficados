@@ -10,7 +10,7 @@ const Login = () => {
     });
 
     return (
-        <div className="container">
+        <div className="container colors-azul_oscuro">
             <form onSubmit={onSubmit}>
                 <img src="src\img\logo.webp" alt="Logo ERP" />
                 <p className="title">Bienvenido</p>
