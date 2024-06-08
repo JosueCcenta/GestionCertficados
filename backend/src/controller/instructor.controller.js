@@ -28,9 +28,9 @@ exports.crearInstructor = [
 
 exports.actualizarInstructor = [
     param("id_instructor").notEmpty().withMessage("El id del instructor es requerido").isInt({ min: 1 }).withMessage("El id del instructor debe ser un número entero positivo"),
-    body('nombre').notEmpty().withMessage('El nombre es requerido').isAlpha().withMessage("El nombre debe de ser solo texto y ser una sola palabra"),
-    body('apellido_p').notEmpty().withMessage('El apellido paterno es requerido').isAlpha().withMessage("El apellido paterno debe de ser solo texto y ser una sola palabra"),
-    body('apellido_m').notEmpty().withMessage('El apellido materno es requerido').isAlpha().withMessage("El apellido materno debe de ser solo texto y ser una sola palabra"),
+    body('nombre').notEmpty().withMessage('El nombre es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage("El nombre debe de ser solo texto y ser una sola palabra"),
+    body('apellido_p').notEmpty().withMessage('El apellido paterno es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage("El apellido paterno debe de ser solo texto y ser una sola palabra"),
+    body('apellido_m').notEmpty().withMessage('El apellido materno es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage("El apellido materno debe de ser solo texto y ser una sola palabra"),
     
     (req, res) => {
         const errors = validationResult(req);
@@ -66,6 +66,24 @@ exports.getInstructorById = [
         })
     }
 
+]
+
+exports.deleteInstructor = [
+    param("id_instructor").notEmpty().withMessage("El id del instructor es necesario").isInt({min : 1}).withMessage("El id del instructor debe de ser un numero positivo entero"),
+    (req,res)=>{
+        const errors = validationResult(req)
+        if(!errors.isEmpty()){
+            return res.status(400).json({error : errors.array()})
+        }
+        const id_instructor = req.params.id_instructor;
+        sql = `call deleteInstructor(?)`
+        ConexionBd.query(sql,[id_instructor],(err)=>{
+            if(err){
+                return res.status(500).json({error: "Ha ocurrido un error en la consulta" + err})
+            }
+            res.status(200).json({result: "Se ha borrado el instructor con el id " + id_instructor})
+        })
+    }
 ]
 
 exports.getInstructors = [
