@@ -68,7 +68,7 @@ exports.getSeminarioById = [
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { id_seminario } = req.params;
+        const id_seminario = req.params.id_seminario;
 
         const sql = `call getSeminarioById(?)`;
 

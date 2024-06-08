@@ -27,5 +27,55 @@ exports.crearInstructor = [
 ]
 
 exports.actualizarInstructor = [
+    param("id_instructor").notEmpty().withMessage("El id del instructor es requerido").isInt({ min: 1 }).withMessage("El id del instructor debe ser un número entero positivo"),
+    body('nombre').notEmpty().withMessage('El nombre es requerido').isAlpha().withMessage("El nombre debe de ser solo texto y ser una sola palabra"),
+    body('apellido_p').notEmpty().withMessage('El apellido paterno es requerido').isAlpha().withMessage("El apellido paterno debe de ser solo texto y ser una sola palabra"),
+    body('apellido_m').notEmpty().withMessage('El apellido materno es requerido').isAlpha().withMessage("El apellido materno debe de ser solo texto y ser una sola palabra"),
     
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const id_instructor = req.params.id_instructor;
+        const { nombre, apellido_p, apellido_m } = req.body;
+
+        const sql = `call updateInstructor(?,?,?)`;
+
+        ConexionBd.query(sql, (nombre, apellido_p, apellido_m,id_instructor), (err) => {
+            if (err) {
+                return res.status(500).json({ error: "Ha ocurrido un error al actualizar el instructor= " + err });
+            }
+            res.status(200).json({ respuesta: "Instructor actualizado satisfactoriamente" });
+        })
+
+    }
+]
+
+exports.getInstructorById = [
+    param("id_instructor").notEmpty().withMessage("El id del instructor es necesario").isInt({min:1}).withMessage("El id del instructor debe de ser un numero entero y positivo"),
+    (req,res)=>{
+        const id_instructor = req.params.id_instructor;
+        const sql = `call getInstructorById(?)`;
+        ConexionBd.query(sql,[id_instructor],(err,respuesta)=>{
+            if(err){
+                return res.status(500).json({error: "Ha ocurrido un error " + err})
+            }
+            res.status(200).json({instructor : respuesta})
+        })
+    }
+
+]
+
+exports.getInstructors = [
+    (req,res)=>{
+        const sql = `call getInstructores()`
+        ConexionBd.query(sql,[],(err,respuesta)=>{
+            if(err){
+                return res.status(500).json({error: "Ha habido un error " + err})
+            }
+            res.status(200).json({instructores : respuesta})
+        })
+    }
 ]
