@@ -27,7 +27,6 @@ exports.crearSeminario = [
     }
 ];
 
-
 exports.actualizarSeminario = [
     param("id_seminario").notEmpty().withMessage("El id del seminario es requerido").isInt({ min: 1 }).withMessage("El id seminario debe ser un número entero positivo"),
     body("nombre_seminario").notEmpty().withMessage("El nombre del seminario es requerido").isString().withMessage("El nombre del seminario tiene que ser un texto"),
@@ -55,7 +54,6 @@ exports.actualizarSeminario = [
     }
 ];
 
-
 exports.getSeminarioById = [
 
     param("id_seminario").notEmpty().withMessage("El id del formulario es necesario").isInt({ min: 1 }).withMessage("El id del seminario debe ser un número entero y positivo"),
@@ -80,6 +78,24 @@ exports.getSeminarioById = [
                 return res.status(404).json({ error: "No se encontró ningún seminario con el ID proporcionado" });
             }
             res.json({ seminario: response[0] });
+        })
+    }
+]
+
+exports.deleteSeminario = [
+    param("id_seminario").notEmpty().withMessage("El id del seminario no debe de estar vacio").isInt({min:1}).withMessage("El id del seminario debe de ser un numero entero y positivo"),
+    (req,res)=>{
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            return res.status(400).json({errors : errors.array()})
+        }
+        const id_seminario = req.params.id_seminario;
+        const sql = `call deleteSeminario(?)`;
+        ConexionBd.query(sql,[id_seminario],(err)=>{
+            if(err){
+                return res.status(500).json({error:"Ha habido un error "+err});
+            }
+            res.status(200).json({respuesta:"Fue eliminado el seminario con el id "+id_seminario});
         })
     }
 ]
