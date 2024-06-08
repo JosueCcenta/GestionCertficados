@@ -1,6 +1,5 @@
 const ConexionBd = require('../config/database.js');
 const { body, validationResult, param } = require('express-validator');
-const validator = require('validator');
 
 
 exports.crearSeminario = [
