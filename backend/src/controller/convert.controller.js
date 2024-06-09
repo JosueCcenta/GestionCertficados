@@ -1,7 +1,7 @@
 const ConexionBd = require('../config/database.js');
 const csvJson = require('convert-csv-to-json')
 let userData = []
-// CREAR
+/** 
 exports.crearCliente = (req, res) => {
     const { nombre, apellido, curso, dni } = req.body
     if (!nombre || !apellido || !curso || !dni) {
@@ -19,7 +19,6 @@ exports.crearCliente = (req, res) => {
     }
     )
 }
-//Listar individual
 exports.getAlumnoByDni = (req, res) => {
     const { dni } = req.params
     if (!dni) {
@@ -37,7 +36,6 @@ exports.getAlumnoByDni = (req, res) => {
         }
     })
 }
-//PAGINACION
 exports.getPaginacion = (req, res) => {
     const { page } = req.params
     if (!page) {
@@ -55,7 +53,6 @@ exports.getPaginacion = (req, res) => {
         }
     })
 }
-//ACTUALIZAR
 exports.updateCliente = (req, res) => {
     const { dni } = req.params
     const { nombre, apellido, curso, codigoqr } = req.body
@@ -74,7 +71,23 @@ exports.updateCliente = (req, res) => {
 
     })
 }
-
+ 
+exports.filterAlumns = async (req, res) => {
+    const { q } = req.query
+    if (!q) {
+        return res.status(500).json({
+            message: "Query param q is required"
+        })
+    }
+    const search = q.toString().toLowerCase()
+    const filteredData = userData.filter(row => {
+        return Object.values(row).some(value => value.toLowerCase().includes(search))
+    })
+    return res.json(200).json({
+        data: filteredData
+    })
+}
+*/
 exports.uploadFile = async (req, res) => {
     const { file } = req
     if (!file) {
@@ -95,18 +108,3 @@ exports.uploadFile = async (req, res) => {
     return res.status(200).json({ data: json })
 }
 
-exports.filterAlumns = async (req, res) => {
-    const { q } = req.query
-    if (!q) {
-        return res.status(500).json({
-            message: "Query param q is required"
-        })
-    }
-    const search = q.toString().toLowerCase()
-    const filteredData = userData.filter(row => {
-        return Object.values(row).some(value => value.toLowerCase().includes(search))
-    })
-    return res.json(200).json({
-        data: filteredData
-    })
-}

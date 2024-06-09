@@ -1,7 +1,6 @@
 const ConexionBd = require('../config/database.js');
 const { body, validationResult, param } = require('express-validator');
 
-
 exports.crearSeminario = [
     body("nombre_seminario").notEmpty().withMessage("El nombre del seminario es requerido").isString().withMessage("El nombre del seminario debe ser una cadena"),
     body("fecha_inicio").notEmpty().withMessage("La fecha de inicio del seminario es requerida").isISO8601().withMessage("El formato de la fecha de inicio es incorrecto"),
@@ -83,19 +82,19 @@ exports.getSeminarioById = [
 ]
 
 exports.deleteSeminario = [
-    param("id_seminario").notEmpty().withMessage("El id del seminario no debe de estar vacio").isInt({min:1}).withMessage("El id del seminario debe de ser un numero entero y positivo"),
-    (req,res)=>{
+    param("id_seminario").notEmpty().withMessage("El id del seminario no debe de estar vacio").isInt({ min: 1 }).withMessage("El id del seminario debe de ser un numero entero y positivo"),
+    (req, res) => {
         const errors = validationResult(req);
-        if(!errors.isEmpty()){
-            return res.status(400).json({errors : errors.array()})
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
         }
         const id_seminario = req.params.id_seminario;
         const sql = `call deleteSeminario(?)`;
-        ConexionBd.query(sql,[id_seminario],(err)=>{
-            if(err){
-                return res.status(500).json({error:"Ha habido un error "+err});
+        ConexionBd.query(sql, [id_seminario], (err) => {
+            if (err) {
+                return res.status(500).json({ error: "Ha habido un error " + err });
             }
-            res.status(200).json({respuesta:"Fue eliminado el seminario con el id "+id_seminario});
+            res.status(200).json({ respuesta: "Fue eliminado el seminario con el id " + id_seminario });
         })
     }
 ]
