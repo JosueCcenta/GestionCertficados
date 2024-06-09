@@ -51,7 +51,7 @@ exports.updateAlumno = [
   }
 ]
 
-exports.filterAlumno = [
+exports.filterPageAlumno = [
   param("page").notEmpty().withMessage("La paginacion no puede estar vacia").isInt({ min: 1 }).withMessage("La paginacion debe de ser un numero entero y positivo desde uno"),
   (req, res) => {
     const errors = validationResult(req);
@@ -83,6 +83,24 @@ exports.deleteAlumno = [
         return res.status(500).json({ error: "Ha ocurrido un error " + err });
       }
       res.status(200).json({ respuesta: "Se ha eliminado el alumno correctamente" })
+    })
+  }
+]
+
+exports.searchBarAlumno = [
+  param("palabraClave").notEmpty().withMessage("La palabra clave no debe de estar vacia").isAlpha('es-ES').withMessage("Debe de ser una palabra"),
+  (req,res)=>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+      return res.status(400).json({error : errors.array()})
+    }
+    const palabraClave = req.params.palabraClave;
+    const sql  = `call getAlumnoByWord(?)`;
+    ConexionBd.query(sql,[palabraClave],(err,respuesta)=>{
+      if(err){
+        return res.status(500).json(err);
+      }
+      res.json({busqueda : respuesta});
     })
   }
 ]
