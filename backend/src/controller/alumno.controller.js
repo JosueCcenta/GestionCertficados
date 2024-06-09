@@ -40,7 +40,7 @@ exports.updateAlumno = [
     const id_alumno = req.params.id_alumno;
     const { nombre, apellido_p, apellido_m, email } = req.body;
 
-    const sql = `CALL updateAlumno(?,?,?,?,?)`
+    const sql = `call updateAlumno(?,?,?,?,?)`
 
     ConexionBd.query(sql, [id_alumno, nombre, apellido_p, apellido_m, email], (err) => {
       if (err) {
@@ -52,7 +52,7 @@ exports.updateAlumno = [
 ]
 
 exports.filterAlumno = [
-  param("page").notEmpty().withMessage("La paginacion no puede estar vacia").isInt({ min: 0 }).withMessage("La paginacion debe de ser un numero entero y positivo desde cero"),
+  param("page").notEmpty().withMessage("La paginacion no puede estar vacia").isInt({ min: 1 }).withMessage("La paginacion debe de ser un numero entero y positivo desde uno"),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -77,7 +77,7 @@ exports.deleteAlumno = [
       return res.status(400).json({ error: errors.array() })
     }
     const id_alumno = req.params.id_alumno;
-    const sql = `call deteleAlumno(?)`;
+    const sql = `call deleteAlumno(?)`;
     ConexionBd.query(sql, [id_alumno], (err) => {
       if (err) {
         return res.status(500).json({ error: "Ha ocurrido un error " + err });
