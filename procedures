@@ -1,0 +1,28 @@
+PROCEDURES: 
+
+createAlumno(?,?,?,?) = ya esta
+updateAlumno(?,?,?,?,?) = ya esta
+getAlumnosFilter20(?) = ya esta
+deleteAlumno(?) = ya esta
+getAlumnos = ya esta
+searchBarAlumno(?) = ya esta
+getAlumnoById(?) = ya esta
+
+createContenidoSeminario(?) = YA ESTA
+updateContenido(?,?) = YA ESTA
+deleteContenido(?,?) = YA ESTA
+
+createInstructor(?,?,?)  = ya esta
+updateInstructor(?,?,?,?) = ya esta
+deleteInstructor(?) = ya esta
+getInstructorbYiD= ya esta 
+getInstructores() = ya esta
+
+createCertificado(?,?) = ya esta
+updateCertificado(?,?,?) = ya esta
+getCertificadoById(?) = ya esta
+
+createSeminario(?,?,?,?,?,?) = ya esta
+updateSeminario(?,?,?,?,?,?,?) = ya esta
+getSeminarioById(?) = ya esta
+deleteSeminario(?) = ya esta

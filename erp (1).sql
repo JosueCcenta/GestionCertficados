@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-06-2024 a las 04:02:28
+-- Tiempo de generación: 10-06-2024 a las 04:17:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -61,6 +61,10 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSeminario` (IN `dp_id_seminario` INT)   BEGIN
     DELETE FROM seminario WHERE id_seminario = dp_id_seminario;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAlumnoById` (IN `dp_id_alumno` INT)   BEGIN
+    SELECT * FROM alumnos WHERE id_alumno = dp_id_alumno;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAlumnos` ()   BEGIN
@@ -125,13 +129,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `searchBarAlumno` (IN `palabraClave`
        OR alumnos.apellido_m LIKE CONCAT('%', palabraClave, '%');
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAlumno` (IN `dp_id_alumno` INT, IN `dp_nombre` VARCHAR(255), IN `dp_apellido_p` VARCHAR(255), IN `dp_apellido_m` VARCHAR(255), IN `dp_email` VARCHAR(255))   BEGIN 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAlumno` (IN `dp_id_alumno` INT, IN `dp_nombre` VARCHAR(255), IN `dp_apellido_p` VARCHAR(255), IN `dp_apellido_m` VARCHAR(255), IN `dp_email` VARCHAR(255))   BEGIN
     UPDATE alumnos 
-    SET nombres = dp_nombre,
-        apellido_p = dp_apellido_p,
-        apellido_m = dp_apellido_m,
-        email = dp_email 
+    SET 
+        nombres = IF(dp_nombre IS NOT NULL AND dp_nombre != '', dp_nombre, nombres),
+        apellido_p = IF(dp_apellido_p IS NOT NULL AND dp_apellido_p != '', dp_apellido_p, apellido_p),
+        apellido_m = IF(dp_apellido_m IS NOT NULL AND dp_apellido_m != '', dp_apellido_m, apellido_m),
+        email = IF(dp_email IS NOT NULL AND dp_email != '', dp_email, email)
     WHERE id_alumno = dp_id_alumno;
+    
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCertificado` (IN `dp_id_certificado` INT, IN `dp_id_alumno` VARCHAR(255), IN `dp_id_seminario` VARCHAR(255))   BEGIN
@@ -215,7 +221,7 @@ CREATE TABLE `alumnos` (
 --
 
 INSERT INTO `alumnos` (`id_alumno`, `nombres`, `apellido_p`, `apellido_m`, `email`) VALUES
-(1, 'Josue', '0', 'Sullon', 'sullon.centa@gmail.com'),
+(1, 'Josue', 'Ccenta', 'Sullon', 'sullon.centa@gmail.com'),
 (3, 'Angely', 'Huaranga', 'Hurtado', 'angely.sjb@gmail.com'),
 (4, 'Ruth', 'Sullon', 'Velasquez', 'rufina.sullon@gmail.com'),
 (5, 'Mufi', 'Sullon ', 'Malvinas', 'mufito.malvidas@gmail.com');
