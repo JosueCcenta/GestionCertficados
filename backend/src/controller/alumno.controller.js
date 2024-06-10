@@ -95,7 +95,7 @@ exports.searchBarAlumno = [
       return res.status(400).json({error : errors.array()})
     }
     const palabraClave = req.params.palabraClave;
-    const sql  = `call getAlumnoByWord(?)`;
+    const sql  = `call searchBarAlumno(?)`;
     ConexionBd.query(sql,[palabraClave],(err,respuesta)=>{
       if(err){
         return res.status(500).json(err);

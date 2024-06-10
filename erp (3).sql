@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-06-2024 a las 23:12:48
+-- Tiempo de generación: 10-06-2024 a las 04:02:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -30,16 +30,37 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `createAlumno` (IN `dp_nombre` VARCH
     VALUES (dp_nombre, dp_apellido_p, dp_apellido_m, dp_email);
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createCertificado` (IN `dp_id_alumno` INT, IN `dp_id_seminario` INT)   BEGIN
+INSERT INTO certificado(certificado.id_alumno,certificado.id_seminario) VALUES (dp_id_alumno,dp_id_seminario) ;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createContenidoSeminario` (IN `dp_contenido` VARCHAR(3000))   BEGIN
+INSERT INTO contenido_seminario(descripcion) VALUES(dp_contenido);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createInstructor` (IN `dp_nombre` VARCHAR(200), IN `dp_apellidop` VARCHAR(200), IN `dp_apellidom` VARCHAR(200))   BEGIN
+INSERT INTO instructor(instructor.nombre,instructor.apellido_p,instructor.apellido_m) VALUES(dp_nombre,dp_apellidop,dp_apellidom);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createSeminario` (IN `dp_nombre_seminario` VARCHAR(255), IN `dp_fecha_inicio` DATE, IN `dp_fecha_termino` DATE, IN `dp_horas_totales` INT, IN `dp_id_instructor` INT, IN `dp_id_contenido_seminario` INT)   BEGIN
+    INSERT INTO seminario (seminario.nombre, seminario.fecha_inicio, seminario.fecha_termino, seminario.hora_total, seminario.id_instructor,seminario.id_contenido)
+    VALUES (dp_nombre_seminario, dp_fecha_inicio, dp_fecha_termino, dp_horas_totales, dp_id_instructor,dp_id_contenido_seminario);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteAlumno` (IN `dp_id_alumno` INT)   BEGIN
 DELETE FROM alumnos WHERE alumnos.id_alumno = dp_id_alumno;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAlumnoByWord` (IN `palabraClave` VARCHAR(200))   BEGIN
-    SELECT * 
-    FROM alumnos 
-    WHERE alumnos.nombres LIKE CONCAT('%', palabraClave, '%') 
-       OR alumnos.apellido_p LIKE CONCAT('%', palabraClave, '%') 
-       OR alumnos.apellido_m LIKE CONCAT('%', palabraClave, '%');
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteContenido` (IN `dp_id_contenido` INT)   BEGIN
+DELETE FROM contenido_seminario WHERE contenido_seminario.id_contenido = dp_id_contenido;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteInstructor` (IN `dp_id_instructor` INT)   BEGIN
+DELETE FROM instructor WHERE instructor.id_instructor = dp_id_instructor;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSeminario` (IN `dp_id_seminario` INT)   BEGIN
+    DELETE FROM seminario WHERE id_seminario = dp_id_seminario;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAlumnos` ()   BEGIN
@@ -84,6 +105,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getCertificadobyId` (IN `id_certifi
         certificado.id_certificado = id_certificado;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorById` (IN `dp_id_instructor` INT)   BEGIN
+    SELECT * FROM instructor WHERE instructor.id_instructor = dp_id_instructor;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructores` ()   BEGIN
+SELECT * FROM instructor;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSeminarioById` (IN `dp_id_seminario` INT)   BEGIN
+    SELECT * FROM seminario WHERE id_seminario = dp_id_seminario;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `searchBarAlumno` (IN `palabraClave` VARCHAR(200))   BEGIN
+    SELECT * 
+    FROM alumnos 
+    WHERE alumnos.nombres LIKE CONCAT('%', palabraClave, '%') 
+       OR alumnos.apellido_p LIKE CONCAT('%', palabraClave, '%') 
+       OR alumnos.apellido_m LIKE CONCAT('%', palabraClave, '%');
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAlumno` (IN `dp_id_alumno` INT, IN `dp_nombre` VARCHAR(255), IN `dp_apellido_p` VARCHAR(255), IN `dp_apellido_m` VARCHAR(255), IN `dp_email` VARCHAR(255))   BEGIN 
     UPDATE alumnos 
     SET nombres = dp_nombre,
@@ -91,6 +132,66 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `updateAlumno` (IN `dp_id_alumno` IN
         apellido_m = dp_apellido_m,
         email = dp_email 
     WHERE id_alumno = dp_id_alumno;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateCertificado` (IN `dp_id_certificado` INT, IN `dp_id_alumno` VARCHAR(255), IN `dp_id_seminario` VARCHAR(255))   BEGIN
+    IF dp_id_alumno IS NOT NULL AND dp_id_alumno != '' THEN
+        UPDATE certificado SET certificado.id_alumno = dp_id_alumno WHERE certificado.id_certificado = dp_id_certificado;
+    END IF;
+
+    IF dp_id_seminario IS NOT NULL AND dp_id_seminario != '' THEN
+        UPDATE certificado SET certificado.id_seminario = dp_id_seminario WHERE certificado.id_certificado = dp_id_certificado;
+    END IF;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateContenido` (IN `dp_id_contenido` INT, IN `dp_contenido` VARCHAR(3000))   BEGIN
+	UPDATE contenido_seminario SET contenido_seminario.descripcion = dp_contenido WHERE contenido_seminario.id_contenido = dp_id_contenido;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateInstructor` (IN `dp_id_instructor` INT, IN `dp_nombre` VARCHAR(255), IN `dp_apellido_p` VARCHAR(255), IN `dp_apellido_m` VARCHAR(255), IN `dp_firma` VARCHAR(255))   BEGIN
+    IF dp_nombre IS NOT NULL AND dp_nombre != '' THEN
+        UPDATE instructor SET instructor.nombre = dp_nombre WHERE instructor.id_instructor = dp_id_instructor;
+    END IF;
+
+    IF dp_apellido_p IS NOT NULL AND dp_apellido_p != '' THEN
+        UPDATE instructor SET instructor.apellido_p = dp_apellido_p WHERE instructor.id_instructor = dp_id_instructor;
+    END IF;
+
+    IF dp_apellido_m IS NOT NULL AND dp_apellido_m != '' THEN
+        UPDATE instructor SET instructor.apellido_m = dp_apellido_m WHERE instructor.id_instructor = dp_id_instructor;
+    END IF;
+
+    IF dp_firma IS NOT NULL AND dp_firma != '' THEN
+        UPDATE instructor SET instructor.firma_instructor = dp_firma WHERE instructor.id_instructor = dp_id_instructor;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateSeminario` (IN `dp_id_seminario` INT, IN `dp_nombre_seminario` VARCHAR(255), IN `dp_fecha_inicio` DATE, IN `dp_fecha_termino` DATE, IN `dp_horas_totales` INT, IN `dp_id_instructor` INT, IN `dp_id_contenido_seminario` INT)   BEGIN
+    IF dp_nombre_seminario IS NOT NULL AND dp_nombre_seminario != '' THEN
+        UPDATE seminario SET seminario.nombre = dp_nombre_seminario WHERE seminario.id_seminario = dp_id_seminario;
+    END IF;
+
+    IF dp_fecha_inicio IS NOT NULL THEN
+        UPDATE seminario SET seminario.fecha_inicio = dp_fecha_inicio WHERE seminario.id_seminario = dp_id_seminario;
+    END IF;
+
+    IF dp_fecha_termino IS NOT NULL THEN
+        UPDATE seminario SET seminario.fecha_termino = dp_fecha_termino WHERE seminario.id_seminario = dp_id_seminario;
+    END IF;
+
+    IF dp_horas_totales IS NOT NULL THEN
+        UPDATE seminario SET seminario.hora_total = dp_horas_totales WHERE seminario.id_seminario = dp_id_seminario;
+    END IF;
+
+    IF dp_id_instructor IS NOT NULL THEN
+        UPDATE seminario SET seminario.id_instructor = dp_id_instructor WHERE seminario.id_seminario = dp_id_seminario;
+    END IF;
+
+    IF dp_id_contenido_seminario IS NOT NULL THEN
+        UPDATE seminario SET seminario.id_contenido = dp_id_contenido_seminario WHERE seminario.id_seminario = dp_id_seminario;
+    END IF;
+    
 END$$
 
 DELIMITER ;
@@ -156,7 +257,10 @@ CREATE TABLE `contenido_seminario` (
 --
 
 INSERT INTO `contenido_seminario` (`id_contenido`, `descripcion`) VALUES
-(1, '1)holaaaa , 2) Nolose, 3) aASKJDNAS');
+(1, '1)holaaaa , 2) Nolose, 3) aASKJDNAS'),
+(5, 'KJASDBKJASDASDAS'),
+(6, '0'),
+(7, 'Buneas');
 
 -- --------------------------------------------------------
 
@@ -178,7 +282,8 @@ CREATE TABLE `instructor` (
 
 INSERT INTO `instructor` (`id_instructor`, `nombre`, `apellido_p`, `apellido_m`, `firma_instructor`) VALUES
 (1, 'Ciro', 'SD', 'SD', 'SDFSDVZXCVDX'),
-(2, 'Yaco', 'AS', 'SDVDS', 'SDFSDF');
+(2, 'asf', 'asvzxv', 'zxv', 'qwefasdg'),
+(5, 'Angely', 'Huaranga', 'asd', 'asf');
 
 -- --------------------------------------------------------
 
@@ -262,13 +367,13 @@ ALTER TABLE `certificado`
 -- AUTO_INCREMENT de la tabla `contenido_seminario`
 --
 ALTER TABLE `contenido_seminario`
-  MODIFY `id_contenido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_contenido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `instructor`
 --
 ALTER TABLE `instructor`
-  MODIFY `id_instructor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_instructor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `seminario`

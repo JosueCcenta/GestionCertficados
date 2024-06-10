@@ -49,7 +49,7 @@ exports.deleteContenidoSeminario = [
         }
         const id_contenido = req.params.id_contenido;
 
-        sql = `call deleteContenido(?,?)`;
+        sql = `call deleteContenido(?)`;
         ConexionBd.query(sql, [id_contenido], (err) => {
             if (err) {
                 return res.status(500).json({ error: err })

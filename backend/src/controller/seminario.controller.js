@@ -7,17 +7,18 @@ exports.crearSeminario = [
     body("fecha_termino").notEmpty().withMessage("La fecha de finalización del seminario es requerida").isISO8601().withMessage("El formato de la fecha de finalización es incorrecto"),
     body("horas_totales").notEmpty().withMessage("Las horas totales del curso no pueden estar vacías").isNumeric().withMessage("Las horas totales deben ser numéricas"),
     body("id_instructor").notEmpty().withMessage("El instructor no puede estar vacío").isInt({ min: 1 }).withMessage("El id del instructor debe ser numérico"),
+    body("id_contenido_seminario").notEmpty().withMessage("El contenido no puede estar vacío").isInt({ min: 1 }).withMessage("El id del contenido debe ser numérico"),
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        const { nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor } = req.body;
+        const { nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_contenido_seminario } = req.body;
 
-        const sql = `CALL createSeminario(?,?,?,?,?)`;
+        const sql = `CALL createSeminario(?,?,?,?,?,?)`;
 
-        ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor], (err) => {
+        ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor,id_contenido_seminario], (err) => {
             if (err) {
                 return res.status(500).json({ error: "Ha ocurrido un error al crear el seminario: " + err.message });
             }
@@ -33,6 +34,7 @@ exports.actualizarSeminario = [
     body("fecha_termino").notEmpty().withMessage("La fecha de finalización del seminario es requerida").isISO8601().withMessage("El formato de fecha de finalización es incorrecto"),
     body("horas_totales").notEmpty().withMessage("Las horas totales del curso no pueden estar vacías").isNumeric().withMessage("Las horas totales deben ser numéricas"),
     body("id_instructor").notEmpty().withMessage("El instructor no puede estar vacío").isInt({ min: 1 }).withMessage("El id del instructor debe ser numérico"),
+    body("id_contenido_seminario").notEmpty().withMessage("El contenido no puede estar vacío").isInt({ min: 1 }).withMessage("El id del contenido debe ser numérico"),
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -40,11 +42,11 @@ exports.actualizarSeminario = [
         }
 
         const id_seminario = req.params.id_seminario;
-        const { nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor } = req.body;
+        const { nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_contenido_seminario } = req.body;
 
         const sql = `CALL updateSeminario(?,?,?,?,?,?)`;
 
-        ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_seminario], (err) => {
+        ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_seminario,id_contenido_seminario], (err) => {
             if (err) {
                 return res.status(500).json({ error: "Ha ocurrido un error al actualizar el seminario: " + err.message });
             }

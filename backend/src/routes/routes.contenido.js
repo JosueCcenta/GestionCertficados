@@ -7,4 +7,4 @@ module.exports = () => {
     router.put('/contenido/:id_contenido', contenidoController.updateContenidoSeminario);
     router.delete('/contenido/:id_contenido', contenidoController.deleteContenidoSeminario);
     return router;
-}
+}   

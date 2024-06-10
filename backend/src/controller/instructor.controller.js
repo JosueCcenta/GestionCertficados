@@ -41,7 +41,7 @@ exports.updateInstructor = [
         const id_instructor = req.params.id_instructor;
         const { nombre, apellido_p, apellido_m } = req.body;
 
-        const sql = `call updateInstructor(?,?,?)`;
+        const sql = `call updateInstructor(?,?,?,?)`;
 
         ConexionBd.query(sql, [id_instructor, nombre, apellido_p, apellido_m], (err) => {
             if (err) {
