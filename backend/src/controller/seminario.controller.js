@@ -44,7 +44,7 @@ exports.actualizarSeminario = [
         const id_seminario = req.params.id_seminario;
         const { nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_contenido_seminario } = req.body;
 
-        const sql = `CALL updateSeminario(?,?,?,?,?,?)`;
+        const sql = `CALL updateSeminario(?,?,?,?,?,?,?)`;
 
         ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_seminario,id_contenido_seminario], (err) => {
             if (err) {
@@ -56,21 +56,14 @@ exports.actualizarSeminario = [
 ];
 
 exports.getSeminarioById = [
-
     param("id_seminario").notEmpty().withMessage("El id del formulario es necesario").isInt({ min: 1 }).withMessage("El id del seminario debe ser un número entero y positivo"),
-
     (req, res) => {
-
         const errors = validationResult(req);
-
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-
         const id_seminario = req.params.id_seminario;
-
         const sql = `call getSeminarioById(?)`;
-
         ConexionBd.query(sql, [id_seminario], (err, response) => {
             if (err) {
                 return res.status(500).json({ error: "Ha ocurrido un error al obtener el seminario= " + err });

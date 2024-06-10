@@ -48,4 +48,23 @@ exports.updateCertificado = [
     }
 ]
 
-getAlumnoById
+exports.getCertificadoById = [
+    param("id_certificado").notEmpty().withMessage('El id del certificado es necesario').isInt({ min: 1 }).withMessage('El id del certificado debe ser un número entero positivo'),
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { id_certificado } = req.params;
+        const sql = `CALL getCertificadoById(?)`;
+        ConexionBd.query(sql, [id_certificado], (err, response) => {
+            if (err) {
+                return res.status(500).json({ error: "Ha ocurrido un problema al obtener el certificado: " + err });
+            }
+            if (response.length === 0) {
+                return res.status(404).json({ error: "No se encontraron certificados con el ID proporcionado" });
+            }
+            res.json({ certificado: response[0] });
+        });
+    }
+];
