@@ -112,7 +112,37 @@ exports.getAlumnos = [
       if (err) {
         return res.status(500).json({ error: "Ha ocurrido un problema: " + err })
       }
-      res.json(response)
+      res.json({alumnos : response[0]})
     })
   }
 ]
+
+exports.getAlumnoById = [
+
+  param("id_alumno").notEmpty().withMessage('El id del alumno es necesario').isInt({ min: 1 }).withMessage('El id del alumno debe ser un número entero positivo'),
+
+  (req, res) => {
+
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+          return res.status(400).json({ errors: errors.array() });
+      }
+
+      const { id_alumno } = req.params;
+
+      const sql = `CALL getAlumnoById(?)`;
+
+      ConexionBd.query(sql, [id_alumno], (err, response) => {
+          if (err) {
+              return res.status(500).json({ error: "Ha ocurrido un problema al obtener el alumno: " + err });
+          }
+
+          if (response.length === 0) {
+              return res.status(404).json({ error: "No se encontraron alumnos con el ID proporcionado" });
+          }
+
+          res.json({ alumno: response[0] });
+      });
+  }
+];
