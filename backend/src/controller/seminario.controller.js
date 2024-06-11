@@ -18,7 +18,7 @@ exports.crearSeminario = [
 
         const sql = `CALL createSeminario(?,?,?,?,?,?)`;
 
-        ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor,id_contenido_seminario], (err) => {
+        ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_contenido_seminario], (err) => {
             if (err) {
                 return res.status(500).json({ error: "Ha ocurrido un error al crear el seminario: " + err.message });
             }
@@ -46,7 +46,7 @@ exports.actualizarSeminario = [
 
         const sql = `CALL updateSeminario(?,?,?,?,?,?,?)`;
 
-        ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_seminario,id_contenido_seminario], (err) => {
+        ConexionBd.query(sql, [nombre_seminario, fecha_inicio, fecha_termino, horas_totales, id_instructor, id_seminario, id_contenido_seminario], (err) => {
             if (err) {
                 return res.status(500).json({ error: "Ha ocurrido un error al actualizar el seminario: " + err.message });
             }
@@ -90,6 +90,42 @@ exports.deleteSeminario = [
                 return res.status(500).json({ error: "Ha habido un error " + err });
             }
             res.status(200).json({ respuesta: "Fue eliminado el seminario con el id " + id_seminario });
+        })
+    }
+]
+
+exports.searchBarSeminario = [
+    param("palabraClave").notEmpty().withMessage("La palabra clave no debe de estar vacia").isAlpha('es-ES').withMessage("Debe de ser una palabra"),
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
+        }
+        const palabraClave = req.params.palabraClave;
+        const sql = `call searchBarSeminario(?)`;
+        ConexionBd.query(sql, [palabraClave], (err, respuesta) => {
+            if (err) {
+                return res.status(500).json(err);
+            }
+            res.json({ busqueda: respuesta });
+        })
+    }
+]
+
+exports.getUsuariosFilter20 = [
+    param("page").notEmpty().withMessage("La paginacion no puede estar vacia").isInt({ min: 1 }).withMessage("La paginacion debe de ser un numero entero y positivo desde uno"),
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() })
+        }
+        const page = req.params.page;
+        const sql = `call getUsuariosFilter20(?)`;
+        ConexionBd.query(sql, [page], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: "Ha ocurrido un error " + err });
+            }
+            res.status(200).json({ seminario: result })
         })
     }
 ]
