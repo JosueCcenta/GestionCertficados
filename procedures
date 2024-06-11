@@ -26,3 +26,23 @@ createSeminario(?,?,?,?,?,?) = ya esta
 updateSeminario(?,?,?,?,?,?,?) = ya esta
 getSeminarioById(?) = ya esta
 deleteSeminario(?) = ya esta
+
+
+nueva tabla creada  = tipo de usuario = listo
+nueva tabla creada = usuario = ya esta 
+nuevo campo creado en tabla alumnos = dni
+crear foraneas en tabla de alumnos y usuarios con el id_tipo_usuario
+actualizar procedures que aparecen alumnos 
+agregar el campo de contraseña a las tablas de alumnos y usuarios
+
+
+DELIMITER //
+CREATE PROCEDURE login(IN dp_usuario VARCHAR(100), IN dp_contrasena VARCHAR(20))
+BEGIN 
+DECLARE dp_autentificador VARCHAR(20),
+DECLARE dp_alumnos VARCHAR(500),
+DECLARE dp_usuarios VARCHAR(500),
+dp_alumnos = SELECT * FROM alumnos WHERE alumnos.nombres OR alumnos.dni = dp_usuario
+if(dp_alumnos != "")
+if()
+DELIMITER ;
