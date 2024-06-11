@@ -1,46 +1,48 @@
 PROCEDURES: 
 
+ALUMNOS COMPLETADO
 createAlumno(?,?,?,?) = ya esta
 updateAlumno(?,?,?,?,?) = ya esta
 getAlumnosFilter20(?) = ya esta
 deleteAlumno(?) = ya esta
 getAlumnos = ya esta
 searchBarAlumno(?) = ya esta
-getAlumnoById(?) = ya esta
+getAlumnoById(?) = ya esta 
 
 createContenidoSeminario(?) = YA ESTA
 updateContenido(?,?) = YA ESTA
 deleteContenido(?,?) = YA ESTA
-getContenidoSeminarioById = FALTA IMPLEMENTARLO
-searchBarContenidoSeminario(?) = FALTA IMPLEMENTARLO
-getContenidoSeminarioFilter20 () = FALTA IMPLEMENTARLO
+getContenidoSeminarioById = YA ESTA
+searchBarContenidoSeminario(?) = YA ESTA
+getContenidoSeminarioFilter20 () = YA ESTA
 
 createInstructor(?,?,?)  = ya esta
 updateInstructor(?,?,?,?) = ya esta
 deleteInstructor(?) = ya esta
 getInstructorbYiD= ya esta 
 getInstructores() = ya esta
-searchBarInstructor(?) = FALTA IMPLEMENTARLO
+searchBarInstructor(?) = ya esta
 
 createCertificado(?,?) = ya esta
 updateCertificado(?,?,?) = ya esta
-getCertificadoById(?) = ya esta
+getCertificadoById(?) = ya esta 
+---------------------------------------------------------
 
 createSeminario(?,?,?,?,?,?) = ya esta
 updateSeminario(?,?,?,?,?,?,?) = ya esta
 getSeminarioById(?) = ya esta
 deleteSeminario(?) = ya esta
 searchBarSeminario() = FALTA IMPLEMENTARLO
-getSeminarioFilter20() = FALTA IMPLEMENTARLO
+getSeminarioFilter20() = FALTA IMPLEMENTARLO 6
 
 createUsuario() = FALTA IMPLEMENTARLO
 updateUsuario () = FALTA IMPLEMENTARLO
 getUsuarioById () = FALTA IMPLEMENTARLO
 deleteUsuario () = FALTA IMPLEMENTARLO
 searchBarUsuario () = FALTA IMPLEMENTARLO
-getUsuariosFilter20 () = FALTA IMPLEMENTARLO
+getUsuariosFilter20 () = FALTA IMPLEMENTARLO 6
 
 createTipo_usuario () =
 updateTipo_usuario () =
 getTipo_usuarioById () =
-deleteTipo_usuario () =
+deleteTipo_usuario () = 4

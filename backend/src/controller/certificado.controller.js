@@ -8,7 +8,7 @@ exports.crearCertificado = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
         }
 
         const { id_alumno, id_seminario } = req.body;
@@ -17,7 +17,7 @@ exports.crearCertificado = [
 
         ConexionBd.query(sql, [id_alumno, id_seminario], (err) => {
             if (err) {
-                return res.status(500).json({ error: "Ha ocurrido un error al crear el certificado= " + err });
+                return res.status(500).json({error : "Ha habido un problema con el servidor = "+err});
             }
             res.status(200).json({ respuesta: "Certificado creado satisfactoriamente" });
         });
@@ -31,7 +31,7 @@ exports.updateCertificado = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
         }
 
         const id_certificado = req.params.id_certificado;
@@ -41,7 +41,7 @@ exports.updateCertificado = [
 
         ConexionBd.query(sql, [id_certificado, id_alumno, id_seminario], (err) => {
             if (err) {
-                return res.status(500).json({ error: "Ha habido un problemas " + err })
+                return res.status(500).json({error : "Ha habido un problema con el servidor = "+err})
             }
             res.status(200).json("Certificado actualizado satisfactoriamente")
         })
@@ -53,13 +53,13 @@ exports.getCertificadoById = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
         }
         const { id_certificado } = req.params;
         const sql = `CALL getCertificadoById(?)`;
         ConexionBd.query(sql, [id_certificado], (err, response) => {
             if (err) {
-                return res.status(500).json({ error: "Ha ocurrido un problema al obtener el certificado: " + err });
+                return res.status(500).json({error : "Ha habido un problema con el servidor = "+err});
             }
             if (response.length === 0) {
                 return res.status(404).json({ error: "No se encontraron certificados con el ID proporcionado" });
