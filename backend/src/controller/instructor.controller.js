@@ -2,29 +2,36 @@ const ConexionBd = require("../config/database");
 const { body, validationResult, param } = require('express-validator');
 
 exports.createInstructor = [
-    body('nombre').notEmpty().withMessage('El nombre es requerido').isAlpha().withMessage("El nombre debe de ser solo texto y ser una sola palabra"),
-    body('apellido_p').notEmpty().withMessage('El apellido paterno es requerido').isAlpha().withMessage("El apellido paterno debe de ser solo texto y ser una sola palabra"),
-    body('apellido_m').notEmpty().withMessage('El apellido materno es requerido').isAlpha().withMessage("El apellido materno debe de ser solo texto y ser una sola palabra"),
+    body('nombre')
+        .notEmpty().withMessage('El nombre es requerido')
+        .isAlpha().withMessage('El nombre debe ser solo texto y ser una sola palabra'),
+
+    body('apellido_p')
+        .notEmpty().withMessage('El apellido paterno es requerido')
+        .isAlpha().withMessage('El apellido paterno debe ser solo texto y ser una sola palabra'),
+
+    body('apellido_m')
+        .notEmpty().withMessage('El apellido materno es requerido')
+        .isAlpha().withMessage('El apellido materno debe ser solo texto y ser una sola palabra'),
 
     (req, res) => {
-        const errors = validationResult(req)
+        const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ error: "ha habido un problema en la subida de datos = " + errors.array() })
+            return res.status(400).json({ errors: errors.array() });
         }
 
         const { nombre, apellido_p, apellido_m } = req.body;
 
-        const sql = `call createInstructor(?,?,?)`;
+        const sql = `CALL createInstructor(?,?,?)`;
 
         ConexionBd.query(sql, [nombre, apellido_p, apellido_m], (err) => {
             if (err) {
-                return res.status(500).json({ error: "Ha habido un problema con el servidor = " + err })
+                return res.status(500).json({ error: "Ha habido un problema con el servidor: " + err });
             }
             res.status(200).json({ respuesta: "Instructor creado satisfactoriamente" });
-        })
-
+        });
     }
-]
+];
 
 exports.updateInstructor = [
     param("id_instructor").notEmpty().withMessage("El id del instructor es requerido").isInt({ min: 1 }).withMessage("El id del instructor debe ser un número entero positivo"),

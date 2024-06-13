@@ -1,23 +1,30 @@
 const ConexionBd = require('../config/database.js');
 const { body, validationResult, param } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
 
 exports.crearAlumno = [
-  body('nombre').notEmpty().withMessage('El nombre es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage("El nombre debe de ser un texto"),
-  body('apellido_p').notEmpty().withMessage('El apellido paterno es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage("El apellido paterno debe de ser un texto"),
-  body('apellido_m').notEmpty().withMessage('El apellido materno es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage("El apellido materno debe de ser un texto"),
-  body('email').isEmail().withMessage('Debe proporcionar un email válido').isAlpha('es-ES', { ignore: ' ' }).withMessage("El correo electronico debe de ser un texto"),
-
+  body('nombre').notEmpty().withMessage('El nombre es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage('El nombre debe ser un texto'),
+  body('apellido_p').notEmpty().withMessage('El apellido paterno es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage('El apellido paterno debe ser un texto'),
+  body('apellido_m').notEmpty().withMessage('El apellido materno es requerido').isAlpha('es-ES', { ignore: ' ' }).withMessage('El apellido materno debe ser un texto'),
+  body('dni').notEmpty().withMessage('El DNI es obligatorio').isInt({ min: 1 }).withMessage('El DNI debe ser un número entero positivo').isLength({ min: 8, max: 20 }).withMessage('El DNI debe tener entre 8 y 20 caracteres'),
+  body('email').notEmpty().withMessage('El correo no debe estar vacío').isEmail().withMessage('Debe proporcionar un email válido'),
+  body('contrasena').notEmpty().withMessage('La contraseña no debe estar vacía'),
+  body('id_tipo_usuario').notEmpty().withMessage('El tipo de usuario no debe estar vacío').isInt({ min: 1 }).withMessage('El tipo de usuario no debe estar vacío'),
+  
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { nombre, apellido_p, apellido_m, email } = req.body;
+    const { nombre, apellido_p, apellido_m, dni, email, contrasena, id_tipo_usuario } = req.body;
 
-    const sql = `call createAlumno(?,?,?,?)`;
+    const sql = `call createAlumno(?,?,?,?,?,?,?)`;
 
-    ConexionBd.query(sql, [nombre, apellido_p, apellido_m, email], (err) => {
+    const contrasenaHash = bcrypt.hashSync(contrasena, salt);
+
+    ConexionBd.query(sql, [nombre, apellido_p, apellido_m, email, dni, contrasenaHash, id_tipo_usuario], (err) => {
       if (err) {
         return res.status(500).json({ error: "Ha ocurrido un error al crear el alumno= " + err });
       }
@@ -89,18 +96,18 @@ exports.deleteAlumno = [
 
 exports.searchBarAlumno = [
   param("palabraClave").notEmpty().withMessage("La palabra clave no debe de estar vacia").isAlpha('es-ES').withMessage("Debe de ser una palabra"),
-  (req,res)=>{
+  (req, res) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
-      return res.status(400).json({error : errors.array()})
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ error: errors.array() })
     }
     const palabraClave = req.params.palabraClave;
-    const sql  = `call searchBarAlumno(?)`;
-    ConexionBd.query(sql,[palabraClave],(err,respuesta)=>{
-      if(err){
+    const sql = `call searchBarAlumno(?)`;
+    ConexionBd.query(sql, [palabraClave], (err, respuesta) => {
+      if (err) {
         return res.status(500).json(err);
       }
-      res.json({busqueda : respuesta});
+      res.json({ busqueda: respuesta });
     })
   }
 ]
@@ -112,7 +119,7 @@ exports.getAlumnos = [
       if (err) {
         return res.status(500).json({ error: "Ha ocurrido un problema: " + err })
       }
-      res.json({alumnos : response[0]})
+      res.json({ alumnos: response[0] })
     })
   }
 ]
@@ -123,26 +130,26 @@ exports.getAlumnoById = [
 
   (req, res) => {
 
-      const errors = validationResult(req);
+    const errors = validationResult(req);
 
-      if (!errors.isEmpty()) {
-          return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { id_alumno } = req.params;
+
+    const sql = `CALL getAlumnoById(?)`;
+
+    ConexionBd.query(sql, [id_alumno], (err, response) => {
+      if (err) {
+        return res.status(500).json({ error: "Ha ocurrido un problema al obtener el alumno: " + err });
       }
 
-      const { id_alumno } = req.params;
+      if (response.length === 0) {
+        return res.status(404).json({ error: "No se encontraron alumnos con el ID proporcionado" });
+      }
 
-      const sql = `CALL getAlumnoById(?)`;
-
-      ConexionBd.query(sql, [id_alumno], (err, response) => {
-          if (err) {
-              return res.status(500).json({ error: "Ha ocurrido un problema al obtener el alumno: " + err });
-          }
-
-          if (response.length === 0) {
-              return res.status(404).json({ error: "No se encontraron alumnos con el ID proporcionado" });
-          }
-
-          res.json({ alumno: response[0] });
-      });
+      res.json({ alumno: response[0] });
+    });
   }
 ];
