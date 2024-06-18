@@ -1,7 +1,7 @@
 const ConexionBD = require("../config/database");
 const { body, validationResult, param } = require('express-validator');
 
-exports.login = [
+exports.loginAlumno = [
     body("param1").notEmpty().withMessage("El primer valor no puede estar vacio").isString().withMessage("I string"),
     body("param2").notEmpty().withMessage("El segundo valor no puede estar vacio").isString().withMessage("I string"),
     (req, res) => {
@@ -35,4 +35,8 @@ exports.login = [
             }
         )
     }
+]
+
+exports.loginUsuario = [
+    
 ]

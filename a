@@ -41,7 +41,10 @@ deleteUsuario () = YA ESTA
 searchBarUsuario () = YA ESTA
 getUsuariosFilter20 () = YA ESTA 6
 ---------------------------------------------------------
-createTipo_usuario () = 
-updateTipo_usuario () =
-getTipo_usuarioById () =
-deleteTipo_usuario () = 4
+createTipo_usuario () = YA ESTA
+updateTipo_usuario () = YA ESTA
+getTipo_usuarioById () = YA ESTA
+deleteTipo_usuario () = YA ESTA4
+
+
+Actualizar usuario y alumno el campo de contraseña con encriptado hash
