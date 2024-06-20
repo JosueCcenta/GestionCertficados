@@ -6,7 +6,7 @@ exports.createContenidoSeminario = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ error: "ha habido un problema en la subida de datos = " + errors.array() })
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
         const contenido = req.body;
         const sql = `call createContenidoSeminario(?)`;
@@ -25,7 +25,7 @@ exports.updateContenidoSeminario = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ error: "ha habido un problema en la subida de datos = " + errors.array() });
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
         const id_contenido = req.params.id_contenido;
         const contenido = req.body;
@@ -45,7 +45,7 @@ exports.deleteContenidoSeminario = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ error: "ha habido un problema en la subida de datos = " + errors.array() });
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
         const id_contenido = req.params.id_contenido;
 
@@ -64,7 +64,7 @@ exports.getContenidoSeminarioById = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ error: "ha habido un problema en la subida de datos = " + errors.array() })
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
         const id_contenido_seminario = req.params.id_contenido_seminario;
         const sql = `call getContenidoSeminarioById(?)`;
@@ -82,7 +82,7 @@ exports.searchBarContenidoSeminario = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ error: "ha habido un problema en la subida de datos = " + errors.array() });
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
         const clave = req.params.clave;
         const sql = `call searchBarContenidoSeminario(?)`;
@@ -98,18 +98,17 @@ exports.searchBarContenidoSeminario = [
 exports.getContenidoSeminarioFilter20 = [
     param("page").notEmpty().withMessage("La paginacion no puede estar vacia").isInt({ min: 1 }).withMessage("La paginacion debe de ser un numero entero y positivo desde uno"),
     (req, res) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()})
-      }
-      const page = req.params.page;
-      const sql = `call getContenidoSeminarioFilter20(?)`;
-      ConexionBd.query(sql, [page], (err, result) => {
-        if (err) {
-          return res.status(500).json({ error: "Ha ocurrido un error " + err });
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
-        res.status(200).json({ alumnos: result })
-      })
+        const page = req.params.page;
+        const sql = `call getContenidoSeminarioFilter20(?)`;
+        ConexionBd.query(sql, [page], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: "Ha ocurrido un error " + err });
+            }
+            res.status(200).json({ alumnos: result })
+        })
     }
-  ]
-  
+]

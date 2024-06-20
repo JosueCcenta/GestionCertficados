@@ -9,6 +9,6 @@ module.exports = () =>{
     router.delete("/instructor/:id_instructor",instructorController.deleteInstructor);
     router.post("/instructor/byid/:id_instructor",instructorController.getInstructorById);
     router.post("/instructor/searchBar/:clave",instructorController.searchBarInstructor);
-    router.get("/instructor/",instructorController.getInstructors);
+    router.get("/instructors/",instructorController.getInstructors);
     return router;
 }

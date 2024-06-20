@@ -9,7 +9,7 @@ const routeContenido = require("./routes/routes.contenido");
 const routeInstructor = require("./routes/routes.instructor");
 const routeCertificado = require("./routes/routes.certificado");
 const routeSeminario = require("./routes/routes.seminario");
-
+const tipoUsuario = require("./routes/routes.tipo_usuario");
 
 app.set('port', process.env.PORT || 3000)
 app.set('json spaces', 2)
@@ -23,7 +23,7 @@ app.use(routeContenido());
 app.use(routeInstructor());
 app.use(routeCertificado());
 app.use(routeSeminario());
-
+app.use(tipoUsuario())
 app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`)
 });
