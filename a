@@ -47,4 +47,16 @@ getTipo_usuarioById () = YA ESTA
 deleteTipo_usuario () = YA ESTA4
 
 
-Actualizar usuario y alumno el campo de contraseña con encriptado hash
+Actualizar usuario y alumno el campo de contraseña con encriptado hash = YA ESTA
+
+Crear las rutas para acceder a los controladores =
+
+alumno = ya esta
+Certificado = ya esta
+Contenido_Seminario = ya esta
+Convert = ya esta
+Instructor Controller = ya esta
+Login Controller = FALTA 
+Seminario Controller = ya esta
+Tipo usuario = ya esta
+usuario = falta

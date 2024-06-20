@@ -1,5 +1,7 @@
 const ConexionBd = require('../config/database.js');
 const { body, validationResult, param } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
 
 exports.createUsuario = [
     body('nombre').notEmpty().withMessage('El nombre es requerido').isAlpha("es-ES").withMessage("El nombre tiene que ser solo texto"),
@@ -14,10 +16,10 @@ exports.createUsuario = [
         }
 
         const { nombre, apellido, contrasena, id_tipo_usuario } = req.body;
-
+        const contrasenaHash = bcrypt.hashSync(contrasena, salt);
         const sql = `CALL createUsuario(?,?,?,?)`;
 
-        ConexionBd.query(sql, [nombre, apellido, contrasena, id_tipo_usuario], (err) => {
+        ConexionBd.query(sql, [nombre, apellido, contrasenaHash, id_tipo_usuario], (err) => {
             if (err) {
                 return res.status(500).json({error : "Ha habido un problema con el servidor = "+err});
             }
@@ -40,10 +42,10 @@ exports.updateUsuario = [
 
         const id_usuario = req.params.id_usuario;
         const { nombre, apellido, contrasena, id_tipo_usuario } = req.body;
-
+        const contrasenaHash = bcrypt.hashSync(contrasena, salt);
         const sql = `CALL updateUsuario(?,?,?)`
 
-        ConexionBd.query(sql, [id_usuario, nombre, apellido, contrasena, id_tipo_usuario], (err) => {
+        ConexionBd.query(sql, [id_usuario, nombre, apellido, contrasenaHash, id_tipo_usuario], (err) => {
             if (err) {
                 return res.status(500).json({error : "Ha habido un problema con el servidor = "+err})
             }

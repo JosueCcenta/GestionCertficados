@@ -112,7 +112,7 @@ exports.searchBarSeminario = [
     }
 ]
 
-exports.getUsuariosFilter20 = [
+exports.getContenidoSeminarioFilter20 = [
     param("page").notEmpty().withMessage("La paginacion no puede estar vacia").isInt({ min: 1 }).withMessage("La paginacion debe de ser un numero entero y positivo desde uno"),
     (req, res) => {
         const errors = validationResult(req);
@@ -120,7 +120,7 @@ exports.getUsuariosFilter20 = [
             return res.status(400).json({ error: errors.array() })
         }
         const page = req.params.page;
-        const sql = `call getUsuariosFilter20(?)`;
+        const sql = `call getContenidoSeminarioFilter20(?)`;
         ConexionBd.query(sql, [page], (err, result) => {
             if (err) {
                 return res.status(500).json({ error: "Ha ocurrido un error " + err });

@@ -46,7 +46,7 @@ exports.updateAlumno = [
     }
     const id_alumno = req.params.id_alumno;
     const { nombre, apellido_p, apellido_m, email } = req.body;
-
+    const contrasenaHash = bcrypt.hashSync(contrasena, salt);
     const sql = `call updateAlumno(?,?,?,?,?)`
 
     ConexionBd.query(sql, [id_alumno, nombre, apellido_p, apellido_m, email], (err) => {

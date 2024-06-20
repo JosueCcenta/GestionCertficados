@@ -9,6 +9,5 @@ const convertController = require("../controller/convert.controller");
 
 module.exports = () => {
     router.post('/file/convert', upload.single('file'), convertController.uploadFile)
-    router.post('/login/')
     return router
 }
