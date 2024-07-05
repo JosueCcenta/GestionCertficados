@@ -8,7 +8,7 @@ exports.createContenidoSeminario = [
         if (!errors.isEmpty()) {
             return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
-        const contenido = req.body;
+        const contenido = req.body.contenido;
         const sql = `call createContenidoSeminario(?)`;
         ConexionBd.query(sql, [contenido], (err) => {
             if (err) {
@@ -28,7 +28,7 @@ exports.updateContenidoSeminario = [
             return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
         const id_contenido = req.params.id_contenido;
-        const contenido = req.body;
+        const contenido = req.body.contenido;
 
         sql = `call updateContenido(?,?)`;
         ConexionBd.query(sql, [id_contenido, contenido], (err) => {

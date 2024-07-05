@@ -8,7 +8,7 @@ exports.crearCertificado = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
 
         const { id_alumno, id_seminario } = req.body;
@@ -31,7 +31,7 @@ exports.updateCertificado = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
 
         const id_certificado = req.params.id_certificado;
@@ -53,7 +53,7 @@ exports.getCertificadoById = [
     (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
         }
         const { id_certificado } = req.params;
         const sql = `CALL getCertificadoById(?)`;

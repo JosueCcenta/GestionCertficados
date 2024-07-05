@@ -60,3 +60,26 @@ Login Controller = FALTA
 Seminario Controller = ya esta
 Tipo usuario = ya esta
 usuario = falta
+
+
+exports.updateTipo = [
+    param("id_tipo_usuario").notEmpty().withMessage("El id no puede estar vacio").isInt({ min: 1 }).withMessage("Debe de ser un número entero y positivo"),
+    body("nombre_tipo_usuario").notEmpty().withMessage("El nombre del tipo de usuario no puede estar vacio").isAlpha("es-ES").withMessage("Debe de ser una palabra"),
+    (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array() });
+        }
+
+        const id_tipo_usuario = req.params.id_tipo_usuario;
+        const nombre_tipo_usuario = req.body.nombre_tipo_usuario;
+
+        const sql = `call updateTipo_usuario(?, ?)`;
+        ConexionBd.query(sql, [id_tipo_usuario, nombre_tipo_usuario], (err) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.status(200).json({ result: "Se ha actualizado correctamente el tipo de usuario" });
+        });
+    }
+];

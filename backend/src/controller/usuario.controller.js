@@ -10,10 +10,10 @@ exports.createUsuario = [
     body('id_tipo_usuario').notEmpty().withMessage('El id del tipo de usuario es requerido').isInt({ min: 1 }).withMessage("El id del tipo de usuario debe ser un número entero positivo"),
 
     (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
-        }
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
+      }
 
         const { nombre, apellido, contrasena, id_tipo_usuario } = req.body;
         const contrasenaHash = bcrypt.hashSync(contrasena, salt);
@@ -35,10 +35,10 @@ exports.updateUsuario = [
     body('contrasena').notEmpty().withMessage('La contraseña es requerida').isString().withMessage("La contraseña no tiene que tener caracteres especiales"),
     body('id_tipo_usuario').notEmpty().withMessage('El id del tipo de usuario es requerido').isInt({ min: 1 }).withMessage("El id del tipo de usuario debe ser un número entero positivo"),
     (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
-        }
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
+      }
 
         const id_usuario = req.params.id_usuario;
         const { nombre, apellido, contrasena, id_tipo_usuario } = req.body;
@@ -57,10 +57,10 @@ exports.updateUsuario = [
 exports.getUsuarioById = [
     param('id_usuario').notEmpty().withMessage('El id del usuario es requerido').isInt({ min: 1 }).withMessage("El id del usuario debe ser un número entero positivo"),
     (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({error:"ha habido un problema en la subida de datos = " +errors.array()});
-        }
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
+      }
         const { id_usuario } = req.params;
         const sql = `CALL getUsuarioById(?)`;
         ConexionBd.query(sql, [id_usuario], (err, response) => {
@@ -80,7 +80,7 @@ exports.deleteUsuario = [
     (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ error: errors.array() })
+          return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
       }
       const id_usuario = req.params.id_usuario;
       const sql = `call deleteUsuario(?)`;
@@ -97,8 +97,8 @@ exports.searchBarUsuario = [
     param("palabraClave").notEmpty().withMessage("La palabra clave no debe de estar vacia").isAlpha('es-ES').withMessage("Debe de ser una palabra"),
     (req,res)=>{
       const errors = validationResult(req);
-      if(!errors.isEmpty()){
-        return res.status(400).json({error : errors.array()})
+      if (!errors.isEmpty()) {
+          return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
       }
       const palabraClave = req.params.palabraClave;
       const sql  = `call searchBarUsuario(?)`;
@@ -116,7 +116,7 @@ exports.getUsuariosFilter20 = [
     (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ error: errors.array() })
+          return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
       }
       const page = req.params.page;
       const sql = `call getUsuariosFilter20(?)`;
