@@ -8,7 +8,7 @@ module.exports = () => {
     router.put('/alumno/filter/:page', alumnosController.filterPageAlumno);
     router.delete('/alumno', alumnosController.deleteAlumno);
     router.post('/alumno/search/:palabraClave', alumnosController.searchBarAlumno);
-    router.post('/alumno/getbyid/',alumnosController.getAlumnoById);
+    router.post('/alumno/getbyid',alumnosController.getAlumnoById);
     router.get('/alumnos', alumnosController.getAlumnos)
     return router
 }

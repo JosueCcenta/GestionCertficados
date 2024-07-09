@@ -12,17 +12,19 @@ exports.crearAlumno = [
   body('*.email').notEmpty().withMessage('El correo no debe estar vacío').isEmail().withMessage('Debe proporcionar un email válido'),
   body('*.contrasena').notEmpty().withMessage('La contraseña no debe estar vacía'),
 
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const alumnos = req.body; 
+    const alumnos = Array.isArray(req.body) ? req.body : [req.body];
     const sql = `CALL createAlumno(?, ?, ?, ?, ?, ?)`; 
+
     const promises = alumnos.map(async (alumno) => {
       const { nombre, apellido_p, apellido_m, dni, email, contrasena } = alumno;
-      const contrasenaHash = bcrypt.hashSync(contrasena, salt); 
+      const contrasenaHash = bcrypt.hashSync(contrasena, salt);
+
 
       return new Promise((resolve, reject) => {
         ConexionBd.query(sql, [nombre, apellido_p, apellido_m, email, dni, contrasenaHash], (err, result) => {
@@ -35,13 +37,12 @@ exports.crearAlumno = [
       });
     });
 
-    Promise.all(promises)
-      .then(() => {
+    try {
+        await Promise.all(promises);
         res.status(200).json({ respuesta: "Alumnos creados satisfactoriamente" });
-      })
-      .catch((err) => {
+    } catch (err) {
         res.status(500).json({ error: "Ha ocurrido un error al crear los alumnos: " + err });
-      });
+    }
   }
 ];
 
