@@ -73,24 +73,6 @@ exports.getInstructorById = [
 
 ]
 
-exports.deleteInstructor = [
-    param("id_instructor").notEmpty().withMessage("El id del instructor es necesario").isInt({ min: 1 }).withMessage("El id del instructor debe de ser un numero positivo entero"),
-    (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
-        }
-        const id_instructor = req.params.id_instructor;
-        const sql = `call deleteInstructor(?)`
-        ConexionBd.query(sql, [id_instructor], (err) => {
-            if (err) {
-                return res.status(500).json({ error: "Ha habido un problema con el servidor = " + err })
-            }
-            res.status(200).json({ result: "Se ha borrado el instructor con el id " + id_instructor })
-        })
-    }
-]
-
 exports.searchBarInstructor = [
     param("clave").notEmpty().withMessage("La clave no debe de estar vacia").isAlpha("es-ES").withMessage(""),
     (req, res) => {

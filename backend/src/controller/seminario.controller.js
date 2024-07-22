@@ -76,24 +76,6 @@ exports.getSeminarioById = [
     }
 ]
 
-exports.deleteSeminario = [
-    param("id_seminario").notEmpty().withMessage("El id del seminario no debe de estar vacio").isInt({ min: 1 }).withMessage("El id del seminario debe de ser un numero entero y positivo"),
-    (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: errors.array() });
-        }
-        const id_seminario = req.params.id_seminario;
-        const sql = `call deleteSeminario(?)`;
-        ConexionBd.query(sql, [id_seminario], (err) => {
-            if (err) {
-                return res.status(500).json({ error: "Ha habido un error " + err });
-            }
-            res.status(200).json({ respuesta: "Fue eliminado el seminario con el id " + id_seminario });
-        })
-    }
-]
-
 exports.searchBarSeminario = [
     param("palabraClave").notEmpty().withMessage("La palabra clave no debe de estar vacia").isAlpha('es-ES').withMessage("Debe de ser una palabra"),
     (req, res) => {

@@ -8,7 +8,5 @@ module.exports = () => {
     router.post("",usuarioController.searchBarUsuario);
     router.post("",usuarioController.getUsuariosFilter20);
     router.put("",usuarioController.updateUsuario);
-    router.delete("",usuarioController.deleteUsuario);
-
     return router
 }

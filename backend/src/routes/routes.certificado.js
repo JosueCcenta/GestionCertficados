@@ -7,6 +7,8 @@ module.exports = () => {
     router.post('/certificado', certificadoController.crearCertificado);
     /**opcional */
     router.put('/certificado/:id_certificado', certificadoController.updateCertificado);
-    router.post('/certificado/id=:id_certificado', certificadoController.getCertificadoById);
+    router.post('/certificado/:id_certificado', certificadoController.getCertificadoById);
+    router.post('/certificado/alumno/:id_alumno', certificadoController.getCertificadoByIdAlumno);
+
     return router;
 }

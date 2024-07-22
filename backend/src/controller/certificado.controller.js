@@ -17,7 +17,7 @@ exports.crearCertificado = [
 
         ConexionBd.query(sql, [id_alumno, id_seminario], (err) => {
             if (err) {
-                return res.status(500).json({error : "Ha habido un problema con el servidor = "+err});
+                return res.status(500).json({ error: "Ha habido un problema con el servidor = " + err });
             }
             res.status(200).json({ respuesta: "Certificado creado satisfactoriamente" });
         });
@@ -41,7 +41,7 @@ exports.updateCertificado = [
 
         ConexionBd.query(sql, [id_certificado, id_alumno, id_seminario], (err) => {
             if (err) {
-                return res.status(500).json({error : "Ha habido un problema con el servidor = "+err})
+                return res.status(500).json({ error: "Ha habido un problema con el servidor = " + err })
             }
             res.status(200).json("Certificado actualizado satisfactoriamente")
         })
@@ -59,7 +59,7 @@ exports.getCertificadoById = [
         const sql = `CALL getCertificadoById(?)`;
         ConexionBd.query(sql, [id_certificado], (err, response) => {
             if (err) {
-                return res.status(500).json({error : "Ha habido un problema con el servidor = "+err});
+                return res.status(500).json({ error: "Ha habido un problema con el servidor = " + err });
             }
             if (response.length === 0) {
                 return res.status(404).json({ error: "No se encontraron certificados con el ID proporcionado" });
@@ -68,3 +68,24 @@ exports.getCertificadoById = [
         });
     }
 ];
+
+exports.getCertificadoByIdAlumno = [
+    param('id_alumno').notEmpty().withMessage("El id del alumno no puede estar vacio").isInt({ min: 1 }).withMessage("El id del alumno debe de ser un numero entero y positivo"),
+    (req, res) => {
+        error = validationResult(req)
+        if (!error.isEmpty()) {
+            return res.status(400).json({ error: "ha habido un problema en la subida de datos", details: error.array() })
+        }
+        const { id_alumno } = req.params;
+        const sql = `CALL getCertificadobyIdAlumno(?)`;
+        ConexionBd.query(sql, [id_alumno], (err, response) => {
+            if (err) {
+                return res.status(500).json({ error: "Ha habido un problema" + err })
+            }
+            if (response.length === 0) {
+                return res.status(500).json({ error: "No se encontraron certificados con el ID proporcionado" });
+            }
+            res.json({ certificado: response[0] });
+        })
+    }
+]
